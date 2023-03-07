@@ -1,0 +1,131 @@
+---
+title: "Case study"
+author: "Akhil"
+date: "2023-02-12"
+output:
+  html_document: default
+  word_document: default
+---
+---
+title: "Akhil case study"
+output: html_document
+---
+
+## Bella beat
+Bellabeat is a successful small company, but they have the potential to become a larger player in the global smart device market.
+
+
+## FitBit Fitness Tracker Data
+CC0: Public Domain, dataset made available through Mobius:
+https://www.kaggle.com/arashnic/fitbit
+
+
+## Loading packages and libraries
+
+```{r loading pack}
+library(tidyverse)
+library(ggplot2)
+```
+
+
+## Loading files
+
+```{r}
+daily_activity <- read.csv("dailyActivity_merged.csv")
+```
+
+We'll create another dataframe for the sleep data. 
+```{r}
+sleep_day <- read.csv("sleepDay_merged.csv")
+```
+
+## Exploring a few key tables
+
+Take a look at the daily_activity data.
+```{r}
+head(daily_activity)
+```
+
+Identify all the columsn in the daily_activity data.
+```{r}
+colnames(daily_activity)
+```
+
+Take a look at the sleep_day data.
+```{r}
+head(sleep_day)
+```
+
+Identify all the columsn in the daily_activity data.
+```{r}
+colnames(sleep_day)
+```
+
+That both datasets have the 'Id' field - this can be used to merge the datasets.
+
+## Understanding some summary statistics
+How many unique participants are there in each dataframe? It looks like there may be more participants in the daily activity dataset than the sleep dataset.
+
+```{r distinct users}
+n_distinct(daily_activity$Id)
+n_distinct(sleep_day$Id)
+```
+
+How many observations are there in each dataframe?
+```{r observations}
+nrow(daily_activity)
+nrow(sleep_day)
+```
+
+What are some quick summary statistics we'd want to know about each data frame?
+
+For the daily activity dataframe:
+```{r}
+daily_activity %>%  
+  select(TotalSteps,
+         TotalDistance,
+         SedentaryMinutes) %>%
+  summary()
+```
+
+For the sleep dataframe:
+```{r}
+sleep_day %>%  
+  select(TotalSleepRecords,
+  TotalMinutesAsleep,
+  TotalTimeInBed) %>%
+  summary()
+```
+
+
+
+## visualization
+
+Relationship between steps taken in a day and sedentary minutes
+
+```{r}
+ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point()
+```
+
+The relationship between minutes asleep and time in bed
+
+```{r}
+ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
+```
+
+What could these trends tell you about how to help market this product? Or areas where you might want to explore further?
+
+## Merging these two datasets together
+
+```{r}
+combined_data <- merge(sleep_day, daily_activity, by="Id")
+```
+
+Take a look at how many participants are in this data set.
+
+```{r}
+n_distinct(combined_data$Id)
+```
+Thank you for attention!
+
+
