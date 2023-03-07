@@ -1,2 +1,2 @@
-# igloo
-## it is a R markdown file
+# Igloo
+## It is a R markdown file
